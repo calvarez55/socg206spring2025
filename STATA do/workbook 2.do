@@ -123,6 +123,16 @@ vif
 
 cd "D:\documents copy\teaching\SOCG 206 spring 2025\jupyter\data"
 use "incar_race_inc 4 16 25.dta", clear
+
+*compare regular std errors
+regress latincar_per latper medhhinc i.eparegion
+
+*regress with robust std errors
+regress latincar_per latper medhhinc i.eparegion, vce(robust)
+
+
+cd "D:\documents copy\teaching\SOCG 206 spring 2025\jupyter\data"
+use "incar_race_inc 4 16 25.dta", clear
 quietly regress latincar_per latper medhhinc i.eparegion
 predict yhat
 list state yhat latincar_per latper medhhinc eparegion in 1 
@@ -132,6 +142,18 @@ di 8.084027 + .9924154*(3.883101)+ .00000388*(40474) +1*(0)-6.288965*(0) -8.2009
 twoway ///
     (scatter latincar_per latper) ///
     (lfit yhat latper)
+	
+cd "D:\documents copy\teaching\SOCG 206 spring 2025\jupyter\data"
+use "incar_race_inc 4 16 25.dta", clear
+regress latincar_per latper medhhinc i.eparegion
+
+*This will report the predicted value of the model when everything is equal to the average
+margins
+
+margins ,at(eparegion==9 latper=50 medhhinc=50000)
+
+margins ,at(eparegion==9 latper=25 medhhinc=50000)
+
 	
 * Bonus storing regression results to excel table
 cd "D:\documents copy\teaching\SOCG 206 spring 2025\jupyter\data"
